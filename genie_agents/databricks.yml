@@ -1,0 +1,56 @@
+# Databricks Asset Bundle — Simbus Fashion Genie & Agents POC
+# See https://docs.databricks.com/dev-tools/bundles/index.html
+bundle:
+  name: Genie_agents
+  uuid: 4cff1388-455f-4486-a342-ddbd146f9620
+
+include:
+  - resources/*.yml
+
+# ---------------------------------------------------------------------------
+# Variable declarations with defaults so `bundle destroy` always resolves them
+# ---------------------------------------------------------------------------
+variables:
+  catalog:
+    description: Unity Catalog catalog name
+    default: genie_agents_poc
+  bronze_schema:
+    description: Schema for raw bronze tables (Auto Loader output)
+    default: bronze
+  silver_schema:
+    description: Schema for cleaned, typed, deduplicated silver tables
+    default: silver
+  gold_schema:
+    description: Schema for gold reporting tables and dimensions
+    default: gold
+  landing_schema:
+    description: Schema that owns the landing volume (raw CSVs)
+    default: bronze
+
+targets:
+  dev:
+    mode: development   # prefixes resources with [dev <user>]; pauses schedules
+    default: true
+    workspace:
+      host: https://dbc-cb8a7372-40bf.cloud.databricks.com
+    variables:
+      catalog: genie_agents_poc
+      bronze_schema: bronze
+      silver_schema: silver
+      gold_schema: gold
+      landing_schema: bronze
+
+  prod:
+    mode: production
+    workspace:
+      host: https://dbc-cb8a7372-40bf.cloud.databricks.com
+      root_path: /Workspace/Users/babyramya.yalagandula@simbustech.com/.bundle/${bundle.name}/${bundle.target}
+    variables:
+      catalog: genie_agents_poc
+      bronze_schema: bronze
+      silver_schema: silver
+      gold_schema: gold
+      landing_schema: bronze
+    permissions:
+      - user_name: madhubabu.duggirala@simbustech.com
+        level: CAN_MANAGE
