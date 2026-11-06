@@ -1,22 +1,22 @@
 # Simbus Fashion — full medallion pipeline (bronze → silver → gold)
-# Pipeline default schema is bronze so Auto Loader tables land there automatically.
-# Silver and gold tables override their schema via spark.conf in the Python files.
+# Source data lives in genie_agents_poc.bronze (landing volume + existing bronze tables).
+# All pipeline outputs land in genie_agents_poc_sdp (bronze / silver / gold schemas).
 
 resources:
   pipelines:
     genie_agents_poc_pipeline:
       name: genie_agents_poc_pipeline
-      catalog: ${var.catalog}
-      schema: ${var.bronze_schema}      # default schema; bronze tables land here
+      catalog: ${var.target_catalog}
+      schema: ${var.bronze_schema}
       serverless: true
 
-      # All three schema names are passed into Python as Spark config
       configuration:
-        catalog_name:        ${var.catalog}
-        bronze_schema:       ${var.bronze_schema}
-        silver_schema:       ${var.silver_schema}
-        gold_schema:         ${var.gold_schema}
-        landing_schema_name: ${var.landing_schema}
+        source_catalog:  ${var.source_catalog}
+        source_schema:   ${var.source_schema}
+        target_catalog:  ${var.target_catalog}
+        bronze_schema:   ${var.bronze_schema}
+        silver_schema:   ${var.silver_schema}
+        gold_schema:     ${var.gold_schema}
 
       libraries:
         - glob:

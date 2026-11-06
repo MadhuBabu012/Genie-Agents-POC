@@ -1,10 +1,47 @@
+# Databricks
 .databricks/
+
+# Python build artifacts
 build/
 dist/
 __pycache__/
-*.egg-info
+*.egg-info/
+*.pyc
+*.pyo
+*.pyd
+
+# Virtual environments
 .venv/
+venv/
+env/
+
+# Scratch
 scratch/**
 !scratch/README.md
-**/explorations/**
-**/!explorations/README.md
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Pytest / coverage
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Secrets / credentials
+*.env
+.env.*
+secrets.*
+
+# Databricks bundle state (auto-generated on deploy)
+# .databricks/ already listed above
+
+# Fixtures (sample / test data — usually large files)
+fixtures/
+
+# Jupyter checkpoints
+.ipynb_checkpoints/

@@ -15,9 +15,6 @@ resources:
       #  on_failure:
       #    - your_email@example.com
 
-      parameters:
-        - name: catalog
-          default: ${var.catalog}
 
       tasks:
         - task_key: refresh_pipeline

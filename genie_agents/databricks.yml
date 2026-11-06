@@ -1,5 +1,4 @@
 # Databricks Asset Bundle — Simbus Fashion Genie & Agents POC
-# See https://docs.databricks.com/dev-tools/bundles/index.html
 bundle:
   name: Genie_agents
   uuid: 4cff1388-455f-4486-a342-ddbd146f9620
@@ -7,38 +6,39 @@ bundle:
 include:
   - resources/*.yml
 
-# ---------------------------------------------------------------------------
-# Variable declarations with defaults so `bundle destroy` always resolves them
-# ---------------------------------------------------------------------------
 variables:
-  catalog:
-    description: Unity Catalog catalog name
+  source_catalog:
+    description: Catalog that owns the landing volume and existing bronze data
+    default: genie_agents_poc
+  source_schema:
+    description: Schema inside source_catalog that owns the landing volume
+    default: bronze
+  target_catalog:
+    description: Catalog where all pipeline outputs are written (bronze/silver/gold)
     default: genie_agents_poc
   bronze_schema:
-    description: Schema for raw bronze tables (Auto Loader output)
+    description: Schema for raw bronze tables
     default: bronze
   silver_schema:
-    description: Schema for cleaned, typed, deduplicated silver tables
+    description: Schema for cleaned silver tables
     default: silver
   gold_schema:
-    description: Schema for gold reporting tables and dimensions
+    description: Schema for gold star-schema tables and metric views
     default: gold
-  landing_schema:
-    description: Schema that owns the landing volume (raw CSVs)
-    default: bronze
 
 targets:
   dev:
-    mode: development   # prefixes resources with [dev <user>]; pauses schedules
+    mode: development
     default: true
     workspace:
       host: https://dbc-cb8a7372-40bf.cloud.databricks.com
     variables:
-      catalog: genie_agents_poc
-      bronze_schema: bronze
-      silver_schema: silver
-      gold_schema: gold
-      landing_schema: bronze
+      source_catalog:  genie_agents_poc
+      source_schema:   bronze
+      target_catalog:  genie_agents_poc
+      bronze_schema:   bronze
+      silver_schema:   silver
+      gold_schema:     gold
 
   prod:
     mode: production
@@ -46,11 +46,12 @@ targets:
       host: https://dbc-cb8a7372-40bf.cloud.databricks.com
       root_path: /Workspace/Users/babyramya.yalagandula@simbustech.com/.bundle/${bundle.name}/${bundle.target}
     variables:
-      catalog: genie_agents_poc
-      bronze_schema: bronze
-      silver_schema: silver
-      gold_schema: gold
-      landing_schema: bronze
+      source_catalog:  genie_agents_poc
+      source_schema:   bronze
+      target_catalog:  genie_agents_poc
+      bronze_schema:   bronze
+      silver_schema:   silver
+      gold_schema:     gold
     permissions:
       - user_name: madhubabu.duggirala@simbustech.com
         level: CAN_MANAGE
