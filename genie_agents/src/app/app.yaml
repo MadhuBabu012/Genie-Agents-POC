@@ -1,0 +1,11 @@
+command:
+  - python
+  - why_agent_app.py
+
+env:
+  - name: DATABRICKS_WAREHOUSE_ID
+    value: aa834a57ebcf1870
+  - name: DATABRICKS_CATALOG
+    value: genie_agents_poc
+  - name: DATABRICKS_SCHEMA
+    value: agent_tools

@@ -1,6 +1,6 @@
 # Simbus Fashion — full medallion pipeline (bronze → silver → gold)
 # Source data lives in genie_agents_poc.bronze (landing volume + existing bronze tables).
-# All pipeline outputs land in genie_agents_poc_sdp (bronze / silver / gold schemas).
+# All pipeline outputs land in genie_agents_poc (bronze / silver / gold schemas).
 
 resources:
   pipelines:
@@ -22,6 +22,3 @@ resources:
         - glob:
             include: ../src/Genie_agents_etl/transformations/**
 
-      environment:
-        dependencies:
-          - --editable ${workspace.file_path}

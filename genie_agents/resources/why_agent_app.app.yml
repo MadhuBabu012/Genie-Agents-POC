@@ -1,0 +1,11 @@
+# Databricks App: the "Why?" agent chat front-end (Week 2, Day 10).
+# App names are workspace-global and NOT prefixed by the user in dev mode,
+# so namespace with the deployer's domain-friendly name to avoid collisions.
+resources:
+  apps:
+    why_agent_app:
+      name: why-agent-${workspace.current_user.domain_friendly_name}
+      description: >-
+        Chat front-end for the replenishment Why-agent: asks a question about
+        a store and a product and gets the reason and the numbers behind it.
+      source_code_path: ../src/app

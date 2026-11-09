@@ -1,0 +1,3 @@
+# The app runtime preinstalls dash and databricks-sdk; nothing extra is
+# needed. Pinning databricks-sdk keeps builds reproducible.
+databricks-sdk

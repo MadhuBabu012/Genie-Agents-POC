@@ -10,15 +10,15 @@
 --
 -- Run each statement below on a SQL warehouse to (re)create the metric views
 -- in the gold schema. The pipeline's catalog/schema parameters live in
--- common.py (target_catalog = genie_agents_poc_sdp, gold_schema = gold);
--- to repoint at another catalog, replace genie_agents_poc_sdp.gold below.
+-- common.py (target_catalog = genie_agents_poc, gold_schema = gold);
+-- to repoint at another catalog, replace genie_agents_poc.gold below.
 
 -- ======================================================================
 -- 1) Sales metrics: revenue, units sold, return rate, sell-through,
 --    clearance share and average discount, sliceable by date, week, month,
 --    region, store, grade, category, style, size, season.
 -- ======================================================================
-CREATE OR REPLACE VIEW genie_agents_poc_sdp.gold.mv_retail_sales
+CREATE OR REPLACE VIEW genie_agents_poc.gold.mv_retail_sales
 WITH METRICS LANGUAGE YAML AS
 $$
 version: 1.1
@@ -28,21 +28,21 @@ comment: >-
   Returns are real business events: they reduce revenue and count in
   units_returned. stock (fact_store_stock) is joined at store x product to
   carry the clearance flag and the as-of stock on hand for sell-through.
-source: genie_agents_poc_sdp.gold.fact_sales
+source: genie_agents_poc.gold.fact_sales
 
 joins:
 - name: store
-  source: genie_agents_poc_sdp.gold.dim_store
+  source: genie_agents_poc.gold.dim_store
   'on': source.store_key = store.store_key
   rely:
     at_most_one_match: true
 - name: product
-  source: genie_agents_poc_sdp.gold.dim_product
+  source: genie_agents_poc.gold.dim_product
   'on': source.product_key = product.product_key
   rely:
     at_most_one_match: true
 - name: stock
-  source: genie_agents_poc_sdp.gold.fact_store_stock
+  source: genie_agents_poc.gold.fact_store_stock
   'on': source.store_key = stock.store_key AND source.product_key = stock.product_key
   rely:
     at_most_one_match: true
@@ -191,7 +191,7 @@ $$
 --    transit, warehouse availability and units needed, at the as-of
 --    snapshot date (one row per store x product).
 -- ======================================================================
-CREATE OR REPLACE VIEW genie_agents_poc_sdp.gold.mv_store_stock
+CREATE OR REPLACE VIEW genie_agents_poc.gold.mv_store_stock
 WITH METRICS LANGUAGE YAML AS
 $$
 version: 1.1
@@ -199,16 +199,16 @@ comment: >-
   Store stock-position metrics over gold fact_store_stock. Grain: one row per
   store x product on the as-of snapshot date. A position is stocked out when
   stock_on_hand is zero.
-source: genie_agents_poc_sdp.gold.fact_store_stock
+source: genie_agents_poc.gold.fact_store_stock
 
 joins:
 - name: store
-  source: genie_agents_poc_sdp.gold.dim_store
+  source: genie_agents_poc.gold.dim_store
   'on': source.store_key = store.store_key
   rely:
     at_most_one_match: true
 - name: product
-  source: genie_agents_poc_sdp.gold.dim_product
+  source: genie_agents_poc.gold.dim_product
   'on': source.product_key = product.product_key
   rely:
     at_most_one_match: true
@@ -328,7 +328,7 @@ $$
 -- 3) Warehouse stock metrics: availability by day, warehouse and product,
 --    including the warehouse stock-out rate (the WH-SOUTH story).
 -- ======================================================================
-CREATE OR REPLACE VIEW genie_agents_poc_sdp.gold.mv_warehouse_stock
+CREATE OR REPLACE VIEW genie_agents_poc.gold.mv_warehouse_stock
 WITH METRICS LANGUAGE YAML AS
 $$
 version: 1.1
@@ -336,11 +336,11 @@ comment: >-
   Warehouse stock metrics over gold fact_warehouse_stock. Grain: one row per
   day x warehouse x product. A warehouse-product-day is out of stock when
   available_qty is zero.
-source: genie_agents_poc_sdp.gold.fact_warehouse_stock
+source: genie_agents_poc.gold.fact_warehouse_stock
 
 joins:
 - name: product
-  source: genie_agents_poc_sdp.gold.dim_product
+  source: genie_agents_poc.gold.dim_product
   'on': source.product_key = product.product_key
   rely:
     at_most_one_match: true
