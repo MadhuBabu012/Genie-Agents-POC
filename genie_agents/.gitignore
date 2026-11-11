@@ -1,7 +1,10 @@
 # Databricks
 .databricks/
-.kiro/
+.databricks/
+..kiro/
 .vscode/
+..vscode/
+
 
 # Python build artifacts
 build/
